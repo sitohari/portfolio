@@ -1,36 +1,172 @@
-import React from "react";
+import React, { useState, useEffect } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 
 const NavbarComponent = () => {
+  const [scrolled, setScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { scrollY } = useScroll();
+  
+  // Set specific width values with no transition between them
+  // Use a binary threshold at 50px scroll
+  const width = useTransform(
+    scrollY,
+    [0, 50, 51, 100],
+    ["100%", "100%", "800px", "800px"]
+  );
+  
+  const borderRadius = useTransform(scrollY, [0, 100], [0, 16]);
+  const paddingX = useTransform(scrollY, [0, 100], [16, 24]);
+  const paddingY = useTransform(scrollY, [0, 100], [16, 12]);
+  const boxShadow = useTransform(
+    scrollY,
+    [0, 100],
+    ["0 0 0 rgba(0,0,0,0)", "0 10px 30px rgba(0,0,0,0.1)"]
+  );
+  const borderOpacity = useTransform(scrollY, [0, 100], [0, 1]);
+  
+  // Update scrolled state for conditional rendering
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setScrolled(true);
+      } else {
+        setScrolled(false);
+      }
+    };
+    
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Navigation items with Projects instead of Contact
+  const navItems = [
+    { title: 'Home', link: '#' },
+    { title: 'About', link: 'about' },
+    { title: 'Projects', link: 'Projects' }
+  ];
+
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!mobileMenuOpen);
+  };
+
   return (
-    <nav className="
-        fixed z-20 flex justify-around gap-4 border border-gray-200 bg-white/50 p-2 
-        shadow-lg backdrop-blur-lg dark:border-slate-600/60 dark:bg-slate-800/50 rounded-full 
-        transition-all duration-300
-
-        /*  Mobile & Tablet */
-        bottom-4 left-1/2 -translate-x-1/2 w-auto min-w-[320px] sm:justify-around 
-
-        /* 🖥️ Desktop */
-        md:top-1/2 md:left-6 md:-translate-y-1/2 md:flex-col md:min-w-[64px] md:left-20 
-    ">
-      {[
-        { href: "/", img: "/images/home-white-icon.svg", label: "Home" },
-        { href: "#", img: "/images/profile-white-icon.svg", label: "Profile" },
-        { href: "#", img: "/images/project-white-icon.svg", label: "Projects" },
-        { href: "#", img: "/images/resume-white-icon.svg", label: "Resume" },
-      ].map((item, index) => (
-        <a
-          key={index}
-          href={item.href}
-          className="group flex items-center justify-center gap-2 rounded-full p-2 transition-all duration-300 
-          text-gray-700 hover:bg-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 
-          md:flex-col md:w-full sm:px-4"
+    <motion.header
+      className="fixed top-4 left-0 right-0 z-50 flex justify-center mx-auto"
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ 
+        duration: 0.5, 
+        ease: [0.22, 1, 0.36, 1] 
+      }}
+    >
+      <motion.nav
+        className={`flex items-center justify-between transition-all duration-300 ${
+          scrolled ? 'border border-[#30363D]' : 'border-transparent'
+        }`}
+        style={{ 
+          width,
+          borderRadius,
+          paddingLeft: paddingX,
+          paddingRight: paddingX,
+          paddingTop: paddingY,
+          paddingBottom: paddingY,
+          boxShadow,
+          borderOpacity: borderOpacity,
+          backdropFilter: "blur(8px)",
+          backgroundColor: scrolled ? "rgba(13, 17, 23, 0.75)" : "rgba(13, 17, 23, 0.4)",
+          maxWidth: scrolled ? "800px" : "100%",
+          margin: "0 auto"
+        }}
+      >
+        {/* Logo */}
+        <motion.div 
+          className="text-[#f1f4f5] font-bold text-xl"
+          animate={{ scale: scrolled ? 0.9 : 1 }}
+          transition={{ duration: 0.3 }}
         >
-          <img src={item.img} alt={item.label} className="w-6 h-6 transition-all duration-300 group-hover:scale-110" />
-          <small className="text-xs font-medium hidden sm:block">{item.label}</small>
-        </a>
-      ))}
-    </nav>
+          <img src="/images/logo.svg" alt="Logo" className="w-8 h-8" />
+        </motion.div>
+        
+        {/* Main Navigation */}
+        <motion.ul className="hidden md:flex items-center space-x-10">
+          {navItems.map((item, index) => (
+            <motion.li 
+              key={index}
+              whileHover={{ 
+                y: -3,
+                color: "#58A6FF",
+                textShadow: "0 0 8px rgba(88, 166, 255, 0.5)"
+              }}
+              transition={{ 
+                type: "spring", 
+                stiffness: 300 
+              }}
+            >
+              <a 
+                href={item.link} 
+                className="text-[#f1f4f5] font-medium text-lg transition-all duration-300 relative group"
+              >
+                {item.title}
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#58A6FF] group-hover:w-full transition-all duration-300"></span>
+              </a>
+            </motion.li>
+          ))}
+        </motion.ul>
+        
+        {/* Mobile menu button - only visible on small screens */}
+        <div className="md:hidden">
+          <motion.button 
+            className="text-[#f1f4f5] z-50"
+            onClick={toggleMobileMenu}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+          >
+            {mobileMenuOpen ? (
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            ) : (
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+              </svg>
+            )}
+          </motion.button>
+        </div>
+      </motion.nav>
+
+      {/* Mobile Menu */}
+      <motion.div 
+        className={`fixed inset-0 bg-[#0D1117] z-40 flex flex-col items-center justify-center md:hidden`}
+        initial={{ x: "100%" }}
+        animate={{ x: mobileMenuOpen ? 0 : "100%" }}
+        transition={{ type: "spring", damping: 20 }}
+      >
+        <motion.ul className="flex flex-col items-center space-y-8">
+          {navItems.map((item, index) => (
+            <motion.li 
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ 
+                opacity: mobileMenuOpen ? 1 : 0, 
+                y: mobileMenuOpen ? 0 : 20 
+              }}
+              transition={{ 
+                delay: mobileMenuOpen ? index * 0.1 : 0,
+                duration: 0.3 
+              }}
+            >
+              <a 
+                href={item.link} 
+                className="text-[#f1f4f5] text-2xl font-medium"
+                onClick={toggleMobileMenu}
+              >
+                {item.title}
+              </a>
+            </motion.li>
+          ))}
+        </motion.ul>
+      </motion.div>
+    </motion.header>
   );
 };
 

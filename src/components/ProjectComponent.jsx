@@ -1,30 +1,42 @@
-import React from 'react';
+// src/components/ProjectComponent.jsx
+import React from "react";
+import PropTypes from "prop-types";
+import { useNavigate } from "react-router-dom";
 
-const ProjectComponent = ({ title, icon, description, tech }) => {
-    return (
-        <div className="max-w-sm rounded-lg border-2 border-[#f1f4f5] bg-[#1E1E1E] shadow-lg hover:shadow-xl transition-shadow duration-300">
-        {/* Header Section */}
-        <div className="flex flex-row items-center gap-2 px-4 py-3">
-            <img src={icon || "/images/git-repository-line.svg"} alt="Project Icon" className="w-6 h-6" />
-            <p className="text-2xl font-semibold text-start text-[#0969DA]">
-            {title || "Contoh Project"}
-            </p>
-        </div>
+const ProjectComponent = ({ id, title, thumbnail, category, year }) => {
+  const navigate = useNavigate();
 
-        {/* Description Section */}
-        <p className="px-4 pb-3 text-[#f1f4f5]">
-            {description || "Deskripsi project akan ditampilkan di sini."}
-        </p>
+  const handleClick = () => navigate(`/projects/${id}`);
 
-        {/* Tech Stack Section */}
-        <div className="flex items-center gap-2 px-4 pb-4">
-            <img src="/images/tag-react.svg" alt="Tech Icon" className="w-4 h-4" />
-            <span className="text-base text-[#f1f4f5]">
-            {tech || "React"}
-            </span>
+  return (
+    <div
+      className="group w-full max-w-md cursor-pointer transition-transform duration-300 hover:-translate-y-1"
+      onClick={handleClick}
+    >
+      <div className="rounded-xl shadow-md hover:shadow-lg overflow-hidden">
+        <img
+          src={thumbnail}
+          alt={title}
+          className="w-full h-60 object-cover transition-transform duration-300 group-hover:scale-105"
+        />
+      </div>
+      <div className="mt-3 px-1">
+        <h3 className="text-lg font-semibold text-[#f1f4f5]">{title}</h3>
+        <div className="flex justify-between mt-1 text-[#8B949E]">
+          <p className="text-sm">{category}</p>
+          <p className="text-sm">{year}</p>
         </div>
-        </div>
-    );
+      </div>
+    </div>
+  );
+};
+
+ProjectComponent.propTypes = {
+  id: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  thumbnail: PropTypes.string.isRequired,
+  category: PropTypes.string.isRequired,
+  year: PropTypes.string.isRequired
 };
 
 export default ProjectComponent;

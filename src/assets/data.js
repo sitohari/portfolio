@@ -1,3 +1,4 @@
+
 export const technologies = [
     { id: 1, name: "React", icon: "/images/skill-icons_react-dark.svg" },
     { id: 2, name: "Laravel", icon: "/images/skill-icons_laravel-dark.svg" },
@@ -9,8 +10,11 @@ export const technologies = [
     { id: 8, name: "CSS", icon: "/images/skill-icons_css.svg" },
   ];
 
-export const buttons = [
-    { icon: "/images/Linkedin.svg", label: "Linkedin" },
-    { icon: "/images/Github.svg", label: "Github", },
-    { icon: "/images/Email.svg", label: "Email",  },
-  ];
+
+
+export const links = [ 
+  { label: "Linkedin", link: "https://www.linkedin.com/in/mohamad-tohari-maolana/" , icon :"/images/Linkedin.svg"},
+  { label: "Github", link: "https://github.com/sitohari" , icon :"/images/Github.svg"},
+  { label: "Email", link: "mailto:devsitohari@gmail.com", icon: "/images/Email.svg"}
+]
+

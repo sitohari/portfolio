@@ -1,5 +1,65 @@
 @import "tailwindcss";
 
+html {
+  scroll-behavior: smooth;
+}
+
+@keyframes gradient-move {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animate-gradient-move {
+  background-size: 200% 200%;
+  animation: gradient-move 3s infinite alternate;
+  animation-fill-mode: forwards;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fade-in 1s ease-out;
+  animation-fill-mode: forwards;
+  animation-delay: 0.5s;
+}
+.animate-gradient-move {
+  background-size: 200% 200%;
+  animation: gradient-move 3s infinite alternate;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fade-in 1s ease-out;
+}
+
+/* Added a new animation for a slide-in effect */
+@keyframes slide-in {
+  from { opacity: 0; transform: translateX(-100px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.animate-slide-in {
+  animation: slide-in 1s ease-out;
+}
+
+/* Added a new animation for a zoom-in effect */
+@keyframes zoom-in {
+  from { opacity: 0; transform: scale(0.5); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.animate-zoom-in {
+  animation: zoom-in 1s ease-out;
+}
+
 @keyframes gradient-move {
     0% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
