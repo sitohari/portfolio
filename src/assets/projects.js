@@ -1,5 +1,3 @@
-import project1 from "../assets/ecommerce-project.md?raw";
-
 
 export const projects = [
     {
@@ -8,31 +6,53 @@ export const projects = [
         category: "Web Development",
         year: "2023",
         thumbnail: "/images/thumbnail-project1.png",
-        content: project1, // Isi dari file markdown
+        getContent: async function () {
+            const response = await fetch("/projects/ecommerce-project.md");
+            return await response.text();
+        }
     },
     {
-        id: "2",
-        title: "Community Services Project",
+        id: "1",
+        title: "Ecommerce Project",
         category: "Web Development",
-        year: "2024",
-        thumbnail: "/images/thumbnail-project2.png",
-        content: project1, // Isi dari file markdown
+        year: "2023",
+        thumbnail: "/images/thumbnail-project1.png",
+        getContent: async function () {
+            const response = await fetch("/projects/ecommerce-project.md");
+            return await response.text();
+        }
     },
     {
-        id: "3",
-        title: "Landing Page Hellena",
-        category: "UI/UX Design",
-        year: "2024",
-        thumbnail: "/images/thumbnail-project3.png",
-        content: "", // Isi dari file markdown
+        id: "1",
+        title: "Ecommerce Project",
+        category: "Web Development",
+        year: "2023",
+        thumbnail: "/images/thumbnail-project1.png",
+        getContent: async function () {
+            const response = await fetch("/projects/ecommerce-project.md");
+            return await response.text();
+        }
     },
     {
-        id: "4",
-        title: "Health Set Illustration",
-        category: "UI/UX Design",
-        year: "2024",
-        thumbnail: "/images/thumbnail-ilustration.jpg",
-        content: "", // Isi dari file markdown
+        id: "1",
+        title: "Ecommerce Project",
+        category: "Web Development",
+        year: "2023",
+        thumbnail: "/images/thumbnail-project1.png",
+        getContent: async function () {
+            const response = await fetch("/projects/ecommerce-project.md");
+            return await response.text();
+        }
     },
-    
+    {
+        id: "1",
+        title: "Ecommerce Project",
+        category: "UI/UX Design",
+        year: "2023",
+        thumbnail: "/images/thumbnail-project1.png",
+        getContent: async function () {
+            const response = await fetch("/projects/ecommerce-project.md");
+            return await response.text();
+        }
+    },
 ];

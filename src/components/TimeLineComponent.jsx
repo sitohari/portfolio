@@ -1,184 +1,79 @@
-import React, { useRef, useEffect } from 'react';
-import { motion, useAnimation, useInView } from 'framer-motion';
+import React from 'react'; 
+import { motion } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
+import { FiBriefcase, FiCalendar, FiAward } from 'react-icons/fi';
 
-const TimeLineComponent = () => {
-    const timelineRef = useRef(null);
-    const isInView = useInView(timelineRef, { once: true, amount: 0.2 });
-    const controls = useAnimation();
+import { profileData } from '../assets/data';
 
-    const timelineData = [
-        {
-        date: "March 2023",
-        title: "Certified & Ready to Innovate",
-        description: "Earned the BNSP Certificate in Computer Programming, proving my skills and readiness to tackle real-world tech challenges."
-        },
-        {
-        date: "May 2023",
-        title: "Building a Strong Tech Foundation",
-        description: "Graduated from Vocational High School majoring in Software Engineering, mastering coding, problem-solving, and software development fundamentals."
-        },
-        {
-        date: "September 2023",
-        title: "Advancing with a Passion for Innovation",
-        description: "Embarked on my academic journey at Pamulang University, majoring in Informatics Engineering, eager to explore cutting-edge technologies and create impactful solutions."
-        }
-    ];
+const TimelineComponent = () => {
+  const iconMap = {
+    FiBriefcase: <FiBriefcase />,
+    FiCalendar: <FiCalendar />,
+    FiAward: <FiAward />,
+  };
 
-    // Container animation variants
-    const containerVariants = {
-        hidden: { opacity: 0 },
-        visible: {
-        opacity: 1,
-        transition: {
-            staggerChildren: 0.4,
-            delayChildren: 0.2,
-            duration: 0.5
-        }
-        }
-    };
+  const timelineData = profileData.timeline;
 
-    // Title animation variants
-    const titleVariants = {
-        hidden: { opacity: 0, y: -20 },
-        visible: {
-        opacity: 1,
-        y: 0,
-        transition: {
-            duration: 0.6,
-            ease: [0.22, 1, 0.36, 1]
-        }
-        }
-    };
+  if (!Array.isArray(timelineData)) return null;
 
-    // Timeline item variants
-    const itemVariants = {
-        hidden: { opacity: 0, x: -50 },
-        visible: {
-        opacity: 1,
-        x: 0,
-        transition: {
-            duration: 0.1,
-            ease: [0.22, 1, 0.36, 1],
-            staggerChildren: 0.2
-        }
-        }
-    };
+  return (
+    <div className="relative mb-24 text-white max-w-4xl mx-auto px-4">
+      {/* Judul Section */}
+      <motion.h2 
+        className="text-4xl md:text-5xl font-bold text-center mb-4  "
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        My Timeline
+      </motion.h2>
+      <motion.p 
+        className="text-center text-gray-400 mb-12"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+      >
+        Berikut adalah perjalanan karir saya yang telah saya lalui.
+      </motion.p>
 
-    // Circle dot variants
-    const dotVariants = {
-        hidden: { opacity: 0, scale: 0 },
-        visible: {
-        opacity: 1,
-        scale: 1,
-        transition: {
-            duration: 0.1,
-            ease: "backOut"
-        }
-        }
-    };
+      <div className="absolute left-1/2 -translate-x-1/2 h-full w-0.5 bg-purple-800/30" aria-hidden="true"></div>
+      
+      {timelineData.map((timeline, index) => {
+        const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.5 });
+        const isEven = index % 2 === 0;
+        const IconComponent = iconMap[timeline.icon] || <FiCalendar />;
 
-    // Content variants with timeline sequence
-    const contentVariants = {
-        hidden: { opacity: 0, y: 20 },
-        visible: {
-        opacity: 1,
-        y: 0,
-        transition: {
-            duration: 0.5,
-            ease: "easeOut"
-        }
-        }
-    };
-
-    // Divider line variants
-    const dividerVariants = {
-        hidden: { scaleX: 0, originX: 0 },
-        visible: {
-        scaleX: 1,
-        transition: {
-            duration: 0,
-            ease: [0.22, 1, 0.36, 1],
-            delay: 1.2
-        }
-        }
-    };
-
-    useEffect(() => {
-        if (isInView) {
-        controls.start("visible");
-        }
-    }, [controls, isInView]);
-
-    return (
-        <section className="time-line pb-12 bg-[#0d1117]" ref={timelineRef}>
-        <div className="container mx-auto px-4 max-w-[800px]">
-            <motion.h2 
-            className="text-3xl font-bold text-start mb-8 text-[#f1f4f5]"
-            variants={titleVariants}
-            initial="hidden"
-            animate={controls}
+        return (
+          <div ref={ref} key={index} className="flex items-center w-full mb-8">
+            <motion.div
+              className={`w-1/2 flex ${isEven ? 'justify-end' : 'justify-start'}`}
+              initial={{ x: isEven ? -100 : 100, opacity: 0 }}
+              animate={{ x: inView ? 0 : (isEven ? -100 : 100), opacity: inView ? 1 : 0 }}
+              transition={{ duration: 0.6 }}
             >
-            My Timeline
-            </motion.h2>
-            
-            <motion.ol 
-            className="relative border-s border-gray-700 dark:border-gray-700"
-            variants={containerVariants}
-            initial="hidden"
-            animate={controls}
-            >
-            {timelineData.map((item, index) => (
-                <motion.li 
-                className={`mb-${index === timelineData.length - 1 ? '0' : '10'} ms-4`}
-                key={item.date}
-                variants={itemVariants}
-                >
-                <motion.div 
-                    className="absolute w-3 h-3 bg-gray-200 rounded-full mt-1.5 -start-1.5 border border-white dark:border-gray-900 dark:bg-gray-700"
-                    variants={dotVariants}
-                ></motion.div>
-                
-                <motion.div variants={contentVariants}>
-                    <motion.time 
-                    className="mb-1 text-sm font-normal leading-none text-gray-400 dark:text-gray-500"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.2 + index * 0.4 }}
-                    >
-                    {item.date}
-                    </motion.time>
-                    
-                    <motion.h3 
-                    className="text-lg font-semibold text-white"
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.3 + index * 0.4, duration: 0.5 }}
-                    >
-                    {item.title}
-                    </motion.h3>
-                    
-                    <motion.p 
-                    className="text-base font-normal text-[#8B949E] dark:text-gray-400"
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.4 + index * 0.4, duration: 0.5 }}
-                    >
-                    {item.description}
-                    </motion.p>
-                </motion.div>
-                </motion.li>
-            ))}
-            </motion.ol>
-            
-            <motion.div 
-            className="border-t border-gray-700 mt-12 w-full mx-auto"
-            variants={dividerVariants}
-            initial="hidden"
-            animate={controls}
-            ></motion.div>
-        </div>
-        </section>
-    );
-    };
+              <div className={`w-11/12 p-6 rounded-lg bg-gray-900/50 border border-purple-500/20 shadow-lg ${isEven ? 'text-right' : 'text-left'}`}>
+                <p className="text-sm text-purple-400 mb-1">{timeline.date}</p>
+                <h3 className="text-xl font-bold mb-1">{timeline.title}</h3>
+                <p className="text-md text-gray-400 mb-2">{timeline.company}</p>
+                <p className="text-sm text-gray-500">{timeline.description}</p>
+              </div>
+            </motion.div>
 
-    export default TimeLineComponent;
+            <motion.div
+              className="absolute left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-gray-900 border-2 border-purple-500 flex items-center justify-center text-purple-400"
+              initial={{ scale: 0 }}
+              animate={{ scale: inView ? 1 : 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
+              {IconComponent}
+            </motion.div>
+
+            <div className="w-1/2"></div>
+          </div>
+        );
+      })}
+    </div>
+  );
+};
+
+export default TimelineComponent;

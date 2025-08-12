@@ -11,7 +11,7 @@ const NavbarComponent = () => {
   const width = useTransform(
     scrollY,
     [0, 50, 51, 100],
-    ["100%", "100%", "800px", "800px"]
+    ["100%", "100%", "864px", "864px"]
   );
   
   const borderRadius = useTransform(scrollY, [0, 100], [0, 16]);
@@ -40,7 +40,7 @@ const NavbarComponent = () => {
 
   // Navigation items with Projects instead of Contact
   const navItems = [
-    { title: 'Home', link: '#' },
+    { title: 'Home', link: '/' },
     { title: 'About', link: 'about' },
     { title: 'Projects', link: 'Projects' }
   ];
@@ -64,18 +64,25 @@ const NavbarComponent = () => {
           scrolled ? 'border border-[#30363D]' : 'border-transparent'
         }`}
         style={{ 
-          width,
-          borderRadius,
-          paddingLeft: paddingX,
-          paddingRight: paddingX,
-          paddingTop: paddingY,
-          paddingBottom: paddingY,
-          boxShadow,
-          borderOpacity: borderOpacity,
-          backdropFilter: "blur(8px)",
-          backgroundColor: scrolled ? "rgba(13, 17, 23, 0.75)" : "rgba(13, 17, 23, 0.4)",
-          maxWidth: scrolled ? "800px" : "100%",
-          margin: "0 auto"
+           width,
+  borderRadius,
+  paddingLeft: paddingX,
+  paddingRight: paddingX,
+  paddingTop: paddingY,
+  paddingBottom: paddingY,
+  boxShadow,
+  borderOpacity: borderOpacity,
+  backdropFilter: scrolled ? "blur(16px)" : "none",
+  WebkitBackdropFilter: scrolled ? "blur(16px)" : "none",
+  background: scrolled
+    ? "rgba(6, 0, 16, 0.5)" // transparan saat scroll
+    : "#060010", // solid saat di top
+  border: scrolled
+    ? "1px solid rgba(255, 255, 255, 0.15)" // border tipis saat scroll
+    : "none", // hilang saat di top
+  maxWidth: scrolled ? "864px" : "100%",
+  margin: "0 auto",
+  transition: "all 0.3s ease" // biar smooth
         }}
       >
         {/* Logo */}
@@ -94,7 +101,7 @@ const NavbarComponent = () => {
               key={index}
               whileHover={{ 
                 y: -3,
-                color: "#58A6FF",
+                color: "#5b168d",
                 textShadow: "0 0 8px rgba(88, 166, 255, 0.5)"
               }}
               transition={{ 
@@ -107,7 +114,7 @@ const NavbarComponent = () => {
                 className="text-[#f1f4f5] font-medium text-lg transition-all duration-300 relative group"
               >
                 {item.title}
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#58A6FF] group-hover:w-full transition-all duration-300"></span>
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#5b168d] group-hover:w-full transition-all duration-300"></span>
               </a>
             </motion.li>
           ))}
@@ -136,7 +143,7 @@ const NavbarComponent = () => {
 
       {/* Mobile Menu */}
       <motion.div 
-        className={`fixed inset-0 bg-[#0D1117] z-40 flex flex-col items-center justify-center md:hidden`}
+        className={`fixed inset-0 z-40 flex flex-col items-center justify-center md:hidden`}
         initial={{ x: "100%" }}
         animate={{ x: mobileMenuOpen ? 0 : "100%" }}
         transition={{ type: "spring", damping: 20 }}

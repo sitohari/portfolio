@@ -45,11 +45,11 @@ const InfiniteScrollTech = ({ items, direction = 'left', speed = 'normal', gap =
   return (
     <div 
       ref={containerRef} 
-      className="w-full overflow-hidden bg-[#0D1117] relative py-12"
+      className="w-full overflow-hidden relative py-12"
     >
       
-      <div className="absolute top-0 left-0 h-full w-[20%] bg-gradient-to-r from-[#0D1117] to-transparent z-10"></div>
-      <div className="absolute top-0 right-0 h-full w-[20%] bg-gradient-to-l from-[#0D1117] to-transparent z-10"></div>
+      <div className="absolute top-0 left-0 h-full w-[20%] bg-gradient-to-r from-[#060010] to-transparent z-10"></div>
+      <div className="absolute top-0 right-0 h-full w-[20%] bg-gradient-to-l from-[#060010] to-transparent z-10"></div>
       
       <motion.div 
         className="flex whitespace-nowrap items-center"

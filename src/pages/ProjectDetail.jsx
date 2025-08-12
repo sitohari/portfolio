@@ -15,14 +15,14 @@ const ProjectDetail = () => {
 
   if (!project) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-[#0D1117] text-[#f1f4f5]">
+      <div className="flex flex-col items-center justify-center min-h-screen bg-[#0D1117] text-white">
         <h2 className="text-2xl font-bold mb-4">Proyek tidak ditemukan!</h2>
         <button
           onClick={() => navigate(-1)}
-          className="flex items-center px-4 py-2 border border-gray-700 hover:bg-[#1A2333] transition-colors rounded-md text-[#f1f4f5]"
+          className="flex items-center px-4 py-2 border border-gray-700 hover:bg-[#1A2333] transition-colors rounded-md text-white"
         >
           <img src="/images/arrow-left.svg" alt="arrow-left" className="text-white"/>
-          Kembali
+          Kembali 
         </button>
       </div>
     );
@@ -34,12 +34,13 @@ const ProjectDetail = () => {
 
   return (
     <div className="bg-[#0D1117] min-h-screen py-8">
-      <div className="container max-w-[800px] mx-auto px-4 text-[#f1f4f5]">
+      <div className="container max-w-[800px] mx-auto px-4 text-white">
         {/* Back button */}
         <button
           onClick={handleBack}
-          className="flex items-center mb-8 px-4 py-2 border border-gray-700 hover:bg-[#1A2333] transition-colors rounded-md text-[#f1f4f5]"
+          className="flex items-center mb-8 px-4 py-2 border border-gray-700 hover:bg-[#1A2333] transition-colors rounded-md text-white"
         >
+          <img src="/images/white-arrow-left.svg" alt="arrow-left" className="text-white mr-1"/>
           Kembali
         </button>
 
@@ -59,21 +60,12 @@ const ProjectDetail = () => {
 
         {/* Project content */}
         <div className="mb-10">
-          <div className="prose prose-invert prose-headings:text-[#f1f4f5] prose-p:text-gray-300 max-w-none">
+          <div className="prose prose-invert prose-headings:text-white prose-p:text-gray-300 max-w-none">
             <ReactMarkdown>{project.content}</ReactMarkdown>
           </div>
         </div>
 
-        {/* Back button at bottom */}
-        <div className="mt-16 mb-8">
-          <button
-            onClick={handleBack}
-            className="flex items-center px-4 py-2 border border-gray-700 hover:bg-[#1A2333] transition-colors rounded-md text-[#f1f4f5]"
-          >
-
-            Kembali
-          </button>
-        </div>
+        
       </div>
     </div>
   );
